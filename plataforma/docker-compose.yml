@@ -161,7 +161,7 @@ services:
       - CYGNUS_MYSQL_HOST=mysql-db
       - CYGNUS_MYSQL_PORT=3306
       - CYGNUS_MYSQL_USER=cygnus
-      - CYGNUS_MYSQL_PASS=cygnus2026
+      - CYGNUS_MYSQL_PASS=${CYGNUS_MYSQL_PASS:-cygnus2026} # ggignore
       - CYGNUS_MYSQL_SERVICE_PORT=5050
       - CYGNUS_MYSQL_DATA_MODEL=dm-by-service-path # uma tabela por caminho de serviço: /estufa -> estufa
       - CYGNUS_MYSQL_ATTR_PERSISTENCE=row # uma linha por atributo notificado
@@ -182,10 +182,10 @@ services:
     ports:
       - "3307:3306" # Mude para "3307:3306" se já houver um MySQL no computador
     environment:
-      - MYSQL_ROOT_PASSWORD=fei2026
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-fei2026} # ggignore
       - MYSQL_DATABASE=fei # banco do serviço "fei" (fiware-service)
       - MYSQL_USER=cygnus
-      - MYSQL_PASSWORD=cygnus2026
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-cygnus2026} # ggignore
     volumes:
       - mysql-db:/var/lib/mysql
       - ./mysql:/docker-entrypoint-initdb.d:ro # cria o usuário somente leitura do Grafana
@@ -199,7 +199,7 @@ services:
           "127.0.0.1",
           "-u",
           "root",
-          "-pfei2026",
+          "-p${MYSQL_ROOT_PASSWORD:-fei2026}", # ggignore
         ]
       interval: 5s
       timeout: 5s
@@ -218,7 +218,7 @@ services:
       - "3000:3000" # Interface web do Grafana
     environment:
       - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD:-admin} # ggignore
       - GF_ANALYTICS_REPORTING_ENABLED=false
       - GF_NEWS_NEWS_FEED_ENABLED=false
     volumes:
